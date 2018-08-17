@@ -6,3 +6,6 @@ numpy
 scipy
 requests
 pytorch-ignite
+tensorboard
+tensorboardX
+jupyter
