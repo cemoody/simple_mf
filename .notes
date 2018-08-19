@@ -1,0 +1,122 @@
+- Setup reproducible repo
+- Setup github.io
+- Setup ToC in Keynote
+
+0.
+	why rec sys -- use eric's example
+	why deep learning
+		-- not because of huge data -- but for flexibility
+		- Lot's of relationships like s7 in:
+			https://www.slideshare.net/xamat/recsys-2016-tutorial-lessons-learned-from-building-reallife-recommender-systems
+		recs in industry slide s6
+			https://www.slideshare.net/xamat/past-present-and-future-of-recommender-systems-and-industry-perspective
+		lesson learned:
+			- data density is ext. important
+			- data heterogeneity is impo
+			- explanations matter (show feeding to many teams)
+			- reusable, transformable, interp, reliable: s33
+				https://www.slideshare.net/xamat/recsys-2016-tutorial-lessons-learned-from-building-reallife-recommender-systems
+
+Goals
+	- install, download & setup data
+	- train a rec immediately -- in a notebook
+	- eval it
+	- viz / interpret it
+	- deploy it
+	- improve it
+
+2. MF Follow Along
+	- Kick off model immediately, then explain what's happening
+
+	- Goal at end: to be training your own model
+
+	- visualize matrix
+	- objective functions
+	- like w2v
+	- reguliarization
+	- train in ignite
+	- viz in tensorbordx
+	- metrics: AUC & cAUC
+
+
+3. Interpretation of vectors Follow Along
+	- Goal: to understand the outputs of your model
+
+	- Why: humans have some ideas of whats important
+	- we don't care about scores: care about interp
+	- PCA basics
+	- Interpretation basics
+	- "personalizability" / polarizaibility
+	- Gumbel-softmax?
+	- t-SNE diagrams
+
+
+4. Infrastructure (no follow-along)
+	- No concrete action: just an example infra
+	- Intra-day featurization
+	- model training can mostly fit in one machine
+	- evalutaion:
+		- don't train on your data
+		- A/B testing w/ data mixing across cells
+		- AUC vs cAUC
+
+
+4. Features in MF
+	- Cold-start
+	- Temporal features
+	- Multi-output models
+	
+
+- MF
+	Simple embedding
+	loss: rms
+
+- MF: bias + embedding
+
+PAUSE FOR INTERPRETATION
+
+- W2V with same model :) [TODO]
+
+- MF with side-features
+
+- MF with temporal features
+
+- FM
+
+- Mixture of Tastes
+
+- Deep MF
+
+- VMF
+
+
+- Interpretation w/ Procrustes [TODO]
+
+- Gumbel-softmax [TODO]
+
+
+- LSTM explicit sequence learning [TODO]
+
+9. Add temporal features
+10. Add side features
+
+7. Other approaches
+	- SVD
+	- mention this approach
+	- spotlight
+	- BPR
+	- ALS
+	- SVD ++
+	- Tensor Fact
+	- FMs
+
+	- Hashed embeddings
+
+8. Other considerations
+	- efficientcy
+	-realtime
+	- diversity
+	- explanatory
+	- portfolio optimization
+
+2. NLP + w2v -- MAYBE
