@@ -71,7 +71,7 @@ cd notebooks
 tensorboard --logdir runs
 ```
 
-Visit the tensorboard dashbaord by going to [localhost:6006](localhost:6006)
+Visit the tensorboard dashbaord by going to [http://localhost:6006](http://localhost:6006)
 
 ## 5. Run Jupyter Notebook locally.
 
@@ -81,4 +81,4 @@ This will startup the Jupyter server and open up the available notebooks. Try ru
 jupyter notebook
 ```
 
-Visit the jupyter notebooks by going [here](http://localhost:8888/tree)
+Visit the jupyter notebooks by going [http://localhost:8888/tree](http://localhost:8888/tree)
