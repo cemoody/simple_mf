@@ -29,8 +29,32 @@ Create the environment by following the steps below. If you choose to use your o
 make create_environment
 ```
 
+Follow the directions the above command spits out.
+
 ## 2. Activate the environment.
 The output of the last command, which depends on if you're using `conda` or not, will tell you how to activate your environment.
+
+**Follow the steps in #1 carefully -- you probably don't need step 2a. or 2b!**
+
+### 2a. With `conda`.
+
+If the above step used conda, you can active it the conda environment by running:
+
+`source activate simple_mf`
+
+### 2b. With `pip`.
+If you don't have `conda`, then the output of the `make create_environment` will spit out something like this:
+```
+Make sure the following lines are in shell startup file
+export WORKON_HOME=/Users/chrismoody/.virtualenvs
+export PROJECT_HOME=/Users/chrismoody/Devel
+source /usr/local/bin/virtualenvwrapper.sh
+workon simple_mf
+```
+
+Go ahead and activate your environment by running the above commands.
+
+
 
 ## 3. Download data:
 This will download and preprocess the MovieLens 1M dataset. We'll use this canonical dataset to test drive our code.
@@ -46,3 +70,15 @@ While we're using PyTorch instead of Tensorflow directly, the logging and visual
 cd notebooks
 tensorboard --logdir runs
 ```
+
+Visit the tensorboard dashbaord by going to [http://localhost:6006](http://localhost:6006)
+
+## 5. Run Jupyter Notebook locally.
+
+This will startup the Jupyter server and open up the available notebooks. Try running a few notebooks ahead of time to verify that your environment is setup and functioning well.
+
+```
+jupyter notebook
+```
+
+Visit the jupyter notebooks by going [http://localhost:8888/tree](http://localhost:8888/tree)
