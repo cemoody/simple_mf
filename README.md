@@ -5,15 +5,20 @@ Simple and Flexible Deep Recommenders in PyTorch
 
 Simple but flexible Deep Recommenders in PyTorch. This hands-on tutorial will teach you:
 
-0. [Step 0]() Introduction to autograd & deep learning using PyTorch, the Ignite library, and recommendation engines.
-1. [Step 1](https://github.com/cemoody/simple_mf/blob/master/notebooks/01%20Training%20a%20simple%20MF%20model.ipynb) Build a simple matrix-factorization model in PyTorch. These models are a fundamental core to Netflix's, Pandora's, Stitch Fix's and Amazon's recommendations engines.
-2. [Step 2](https://github.com/cemoody/simple_mf/blob/master/notebooks/02%20Simple%20MF%20Model%20with%20Biases.ipynb) We'll expand on that model to include biases for extra predictive power
-3. [Step 3](https://github.com/cemoody/simple_mf/blob/master/notebooks/03%20Simple%20MF%20Model%20for%20use%20in%20NLP%20%5BTODO%5D.ipynb) We'll take detour and see how word2vec is mathematically identical to recommendation engines
-4. [Step 4](https://github.com/cemoody/simple_mf/blob/master/notebooks/04%20MF%20model%20with%20side-features.ipynb) Add in "side" features, especially useful in coldstart cases
-5. [Step 5](https://github.com/cemoody/simple_mf/blob/master/notebooks/05%20MF%20model%20plus%20temporal-features.ipynb) Model temporal effects which can track seasonal and periodic changes.
-6. [Step 6](https://github.com/cemoody/simple_mf/blob/master/notebooks/06%20FM%20model.ipynb) Upgrade the core of matrix factorization to Factorization Machines, which enables a huge number of interactions while keeping computation under control.
-7. [Step 7](https://github.com/cemoody/simple_mf/blob/master/notebooks/07%20Mixture%20of%20Tastes.ipynb) We'll try out the new "Mixture-of-Tastes" model.
-8. [Step 8](https://github.com/cemoody/simple_mf/blob/master/notebooks/08%20Variational%20MF.ipynb) We'll wrap up with Bayesian Deep Learning applied to rec engines. This Variational Matrix Factorization is a great way to dip your toes into explore & exploit problems.
+![deck](https://i.imgur.com/VqmfR4H.png)
+[View the deck here](https://docs.google.com/presentation/d/1gv7osHoSX8CHf0uzKSqOlxmmAvPPdmstL0nrZHWiHQM/edit#slide=id.p)
+
+Check out the notebooks within to step through variations of matrix factorization models.
+
+0. [Step 0] Introduction to autograd & deep learning using PyTorch, the Ignite library, and recommendation engines.
+1. [Step 1] Build a simple matrix-factorization model in PyTorch. These models are a fundamental core to Netflix's, Pandora's, Stitch Fix's and Amazon's recommendations engines.
+2. [Step 2] We'll expand on that model to include biases for extra predictive power
+4. [Step 3] Add in "side" features, especially useful in coldstart cases
+5. [Step 4] Model temporal effects which can track seasonal and periodic changes.
+3. [Step 5] We'll take detour and see how word2vec is mathematically identical to recommendation engines
+6. [Step 6] Upgrade the core of matrix factorization to Factorization Machines, which enables a huge number of interactions while keeping computation under control.
+7. [Step 7] We'll try out the new "Mixture-of-Tastes" model.
+8. [Step 8] We'll wrap up with Bayesian Deep Learning applied to rec engines. This Variational Matrix Factorization is a great way to dip your toes into explore & exploit problems.
 
 # To get started.
 If at all possible, please check out and pre-install the environment.
