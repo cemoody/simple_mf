@@ -7,6 +7,10 @@ from zipfile import ZipFile
 # Download, unzip and read in the dataset
 name = 'data/ml-1m.zip'
 base = 'data/'
+
+if not os.path.exists(base):
+    os.mkdir(base)
+
 if not os.path.exists(name):
     url = 'http://files.grouplens.org/datasets/movielens/ml-1m.zip'
     r = requests.get(url)
