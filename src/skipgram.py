@@ -5,8 +5,8 @@
 # You'll also need to install Spacy & run:
 # python -m spacy download en_core_web_sm
 
-from collections import defaultdict
 import spacy
+import os.path
 import numpy as np
 import pandas as pd
 import string
@@ -41,31 +41,37 @@ def tokenize(docs):
     return tokenized
 
 
-def count_skipgrams(docs):
+def count_skipgrams(docs, unigrams):
     skipgrams = {}
     for doc in tqdm.tqdm(docs):
         tokens = nlp.tokenizer(doc)
         lemmas = [token.lemma_.translate(translator).lower()
-                  for token in tokens if len(token.lemma_) > 2]
+                  for token in tokens]
+        lemmas = [l for l in lemmas if l in unigrams and len(l) > 2]
         for i, token1 in enumerate(lemmas):
             for j, token2 in enumerate(lemmas):
                 # Don't double-count
                 if j >= i:
                     break
                 key = (token1, token2)
-                if key in skipgrams:
-                    skipgrams[key] += 1
-                # We're stochastically down-sampling rare skipgrams
-                elif random.random() < 0.50:
-                    skipgrams[key] = 0
+                skipgrams[key] = skipgrams.get(key, 0) + 1
     return skipgrams
 
 
-def to_dataframe(skipgrams):
+def to_dataframe(skipgrams, unigrams):
     t0 = [t[0] for t in skipgrams.keys()]
     t1 = [t[1] for t in skipgrams.keys()]
     cnt = [v for v in skipgrams.values()]
     df = pd.DataFrame(dict(token0=t0, token1=t1, counts=cnt))
+    t0 = [t for t in unigrams.keys()]
+    cnt = np.array([v for v in unigrams.values()])
+    prob0 = cnt * 1.0 / cnt.sum()
+    ug0 = pd.DataFrame(dict(token0=t0, prob0=prob0))
+    ug1 = pd.DataFrame(dict(token1=t0, prob1=prob0))
+    df = df.merge(ug0, on='token0')
+    df = df.merge(ug1, on='token1')
+    df['prob_sg'] = df['counts'] * 1.0 / df['counts'].sum()
+    df['pmi'] = np.log(df.prob_sg / df.prob0 / df.prob1) * 1e6
     return df
 
 
@@ -82,8 +88,11 @@ def merge(n=2):
                         .fillna(0.0)
                         .reset_index())
     full['counts'] = full.counts_x + full.counts_y
+    full['pmi'] = full.pmi_x + full.pmi_y
     del full['counts_x']
     del full['counts_y']
+    del full['pmi_x']
+    del full['pmi_y']
     return full
 
 
@@ -92,7 +101,7 @@ def to_codes(full):
     cats = np.unique(cats)
     full['token0_code'] = pd.Categorical(full.token0, categories=cats).codes
     full['token1_code'] = pd.Categorical(full.token1, categories=cats).codes
-    code_code_count = full[['token0_code', 'token1_code', 'counts']]
+    code_code_count = full[['token0_code', 'token1_code', 'counts', 'pmi']]
     code_code_count = code_code_count.values.astype(np.int32)
     code2token = {}
     code2token.update({code: token for (code, token)
@@ -108,6 +117,7 @@ def high_counts_only(full, n=10000):
     top_words = set(token_counts[-n:].index)
     idx = full.token0.isin(top_words)
     idx &= full.token1.isin(top_words)
+    idx &= full.token0 != full.token1
     limited = full[idx]
     limited = limited[limited['counts'] > 0]
     return limited
@@ -115,15 +125,13 @@ def high_counts_only(full, n=10000):
 
 if __name__ == '__main__':
     fn = 'data/urbandict-word-def.csv'
-    # docs = textify(fn)
-    # tokenized = tokenize(docs)
-    # sg = tokenize(docs)
-    # for start in range(2):
-    #     sg = count_skipgrams(docs[1::2])
-    #     df = to_dataframe(sg)
-    #     df.to_pickle(f'data/skipgrams_p{start}.pd')
-    full = merge()
-    sub = high_counts_only(full)
-    coded, c2t, t2c = to_codes(sub)
+    docs = textify(fn)
+    unigrams = pd.read_pickle('data/unigrams.pd')
+    unigrams = unigrams.set_index('token').to_dict()['cnt']
+    limited = {k: v for (k, v) in unigrams.items() if v > 100}
+    sg = count_skipgrams(docs, limited)
+    full = to_dataframe(sg, unigrams)
+    full.to_pickle(f'data/skipgrams_p0.pd')
+    coded, c2t, t2c = to_codes(full)
     np.savez('data/skipgram_full.npz', coded=coded,
              c2t=c2t, t2c=t2c)

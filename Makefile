@@ -40,6 +40,8 @@ lint:
 ## Download Data from S3
 download:
 	$(PYTHON_INTERPRETER) src/download.py
+	# wget https://www.dropbox.com/s/nd1zxh538o6psal/skipgram_full.npz?dl=0
+	# mv skipgram_full.npz data/skipgram_full.npz
 
 ## Set up python interpreter environment
 create_environment:
