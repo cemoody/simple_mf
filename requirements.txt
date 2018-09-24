@@ -9,3 +9,4 @@ pytorch-ignite
 tensorboard
 tensorboardX
 jupyter
+tensorflow
