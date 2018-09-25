@@ -10,3 +10,4 @@ tensorboard
 tensorboardX
 jupyter
 tensorflow
+matplotlib
