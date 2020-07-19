@@ -25,6 +25,14 @@ users = pd.read_csv(base + "/ml-1m/users.dat", delimiter='::', engine='python',
                     names=['user', 'gender', 'age', 'occupation', 'zipcode'])
 
 
+# Create users dataframe
+movies = pd.read_csv(base + "/ml-1m/movies.dat", delimiter='::', engine='python',
+                    names=['id', 'title', 'genres_str'])
+
+
+# Create dict of genres
+movies['genres'] = movies['genres_str'].apply(lambda gs: {key: 1.0 for key in gs.split('|')})
+
 # Create ratings dataframe
 cols = ['user', 'item', 'rating', 'timestamp']
 rat = pd.read_csv(base + '/ml-1m/ratings.dat', delimiter='::',
@@ -39,6 +47,8 @@ rat.to_pickle('data/dataset.pd')
 
 # Merge ratings & user features
 df = rat.merge(users, on='user')
+df = df.merge(movies, left_on='item', right_on='id')
+df = df.sample(frac=1)
 assert len(rat) == len(df)
 
 # Compute cardinalities
@@ -58,16 +68,18 @@ def split(subset):
     feat_cols = ['user', 'item', 'rank', 'occupation']
     out_cols = ['rating']
     features = subset[feat_cols]
+    features_dict = list(subset['genres'].values)
     outcomes = subset[out_cols]
     features = features.values.astype(np.int32)
     outcomes = outcomes.values.astype(np.float32)
     both = subset[feat_cols + out_cols]
-    return features, outcomes, both
+    return features, outcomes, both, features_dict
 
 
-train_x, train_y, train_xy = split(df[df.is_train])
-test_x, test_y, test_xy = split(df[~df.is_train])
+train_x, train_y, train_xy, train_dict = split(df[df.is_train])
+test_x, test_y, test_xy, test_dict = split(df[~df.is_train])
 
 np.savez("data/dataset.npz", train_x=train_x, train_y=train_y,
          train_xy=train_xy, test_x=test_x, test_y=test_y, test_xy=test_xy,
+         train_dict=train_dict, test_dict=test_dict,
          n_user=n_user, n_item=n_item, n_ranks=n_rank, n_occu=n_occu)

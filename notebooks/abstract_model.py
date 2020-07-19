@@ -1,26 +1,35 @@
 import torch
+import numpy as np
 from random import shuffle
 import pytorch_lightning as pl
 
 
-def chunks(X, Y, size):
+def chunks(*arrays, size):
     """Yield successive n-sized chunks from l."""
-    starts = list(range(0, len(X), size))
+    starts = list(range(0, len(arrays[0]), size))
     # always visit your data in a random order!
     shuffle(starts)
     for i in starts:
-        arrs = (X[i:i + size], Y[i:i + size])
+        arrs = [arr[i: i + size] for arr in arrays]
         # convert numpy arrays to torch arrays
-        arrs = [torch.from_numpy(arr) for arr in arrs]
-        yield arrs
+        arrs_torch = []
+        for arr in arrs:
+            if arr.dtype != np.dtype('O'):
+                tarr = torch.from_numpy(arr)
+                arrs_torch.append(tarr)
+            else:
+                arrs_torch.append(arr)
+        yield arrs_torch[:-1], arrs_torch[-1]
 
 
 class AbstractModel(pl.LightningModule):
-    def save_data(self, train_x, train_y, test_x, test_y):
+    def save_data(self, train_x, train_y, test_x, test_y, train_d=None, test_d=None):
         self.train_x = train_x
         self.train_y = train_y
         self.test_x = test_x
         self.test_y = test_y
+        self.train_d = train_d
+        self.test_d = test_d
 
     def training_step(self, batch, batch_nb):
         input, target = batch
@@ -43,10 +52,16 @@ class AbstractModel(pl.LightningModule):
         return {'test_loss': test_loss_mean}
     
     def train_dataloader(self):
-        return chunks(self.train_x, self.train_y, self.batch_size)
-
+        if self.train_d is None:
+            return chunks(self.train_x, self.train_y, size=self.batch_size)
+        else:
+            return chunks(self.train_x, self.train_d, self.train_y, size=self.batch_size)
+        
     def test_dataloader(self):
-        return chunks(self.test_x, self.test_y, self.batch_size)
+        if self.test_d is None:
+            return chunks(self.test_x, self.test_y, size=self.batch_size)
+        else:
+            return chunks(self.test_x, self.test_d, self.test_y, size=self.batch_size)
     
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=1e-2)
