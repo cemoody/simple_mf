@@ -81,7 +81,7 @@ test_x, test_y, test_xy, test_dict = split(df[~df.is_train])
 #          n_user=n_user, n_item=n_item, n_ranks=n_rank)
 
 def split_stream(sub):
-    items = np.zeros((n_user, 1000), dtype='int32') -  1
+    items = np.zeros((n_user, 1000), dtype='int32')
     ratng = np.zeros((n_user, 1000), dtype='int32')
     items[sub['user'].values, sub['rank'].values] = sub['item'].values
     ratng[sub['user'].values, sub['rank'].values] = sub['rating10'].values
@@ -90,7 +90,7 @@ def split_stream(sub):
 
 # Only keep  first 1k  ratings for every  user
 sub = df[df['rank'] < 1000]
-train_items, c = split_stream(sub[sub.is_train])
+train_items, train_ratng = split_stream(sub[sub.is_train])
 test_items, test_ratng = split_stream(sub[~sub.is_train])
 
 np.savez("data/dataset_ml20_wide.npz", 
