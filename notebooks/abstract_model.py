@@ -15,17 +15,20 @@ class AbstractModel(pl.LightningModule):
             self.train_arrs = [from_numpy(x) for x in [train_x, train_y]]
             self.test_arrs = [from_numpy(x) for x in [test_x, test_y]]
         else:
-            self.train_arrs = [from_numpy(x) for x in [train_x, train_y, train_d]]
-            self.test_arrs = [from_numpy(x) for x in [test_x, test_y, test_d]]
+            self.train_arrs = [from_numpy(x) for x in [train_x, train_y]] + [train_d]
+            self.test_arrs = [from_numpy(x) for x in [test_x, test_y]] +[test_d]
 
     def step(self, batch, batch_nb, prefix='train', add_prior=True):
         input, target = batch
         prediction = self.forward(input)
-        loss = self.likelihood(prediction, target)
+        loss, log = self.likelihood(prediction, target)
+        
         if add_prior:
-            loss = loss + self.prior()
-        tensorboard_logs = {f'{prefix}_loss': loss}
-        return {f'{prefix}_loss': loss, 'loss':loss, 'log': tensorboard_logs}
+            loss_prior, log_ = self.prior()
+            loss = loss + loss_prior
+            log.update(log_)
+        log[f'{prefix}_loss'] = loss
+        return {f'{prefix}_loss': loss, 'loss':loss, 'log': log}
 
     def training_step(self, batch, batch_nb):
         return self.step(batch, batch_nb, 'train')
