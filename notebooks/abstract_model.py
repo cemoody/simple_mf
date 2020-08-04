@@ -21,7 +21,7 @@ class AbstractModel(pl.LightningModule):
     def step(self, batch, batch_nb, prefix='train', add_reg=True):
         input, target = batch
         prediction = self.forward(input)
-        loss, log = self.likelihood(prediction, target)
+        loss, log = self.loss(prediction, target)
         
         if add_reg:
             loss_reg, log_ = self.reg()
