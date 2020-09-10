@@ -48,6 +48,8 @@ pip install wandb
 wandb login
 ```
 
+Setup your W&B account, then go to the W&B authorization page: https://app.wandb.ai/authorize and copy the auth code into your terminal when prompted by `wandb login`
+
 ## 3. Download and preprocess data:
 This will download and preprocess the MovieLens 1M dataset. We'll use this canonical dataset to test drive our code.
 
