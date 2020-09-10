@@ -33,8 +33,11 @@ cd simple_mf
 ## 1. Create environment.
 Create the environment by following the steps below. If you choose to use your own environment, you'll need access to have the Python packages in `requirements.txt` installed.
 
+
+Make sure you you have pytorch installed; if not, follow the instructions [here](https://pytorch.org/get-started/locally/)
+
 ```
-pip install pytorch pytorch-lightning
+pip install pytorch-lightning
 ```
 
 Follow the directions the above command spits out.
