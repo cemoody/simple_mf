@@ -37,7 +37,7 @@ Create the environment by following the steps below. If you choose to use your o
 Make sure you you have pytorch installed; if not, follow the instructions [here](https://pytorch.org/get-started/locally/)
 
 ```
-pip install pytorch-lightning
+pip install pytorch-lightning optuna
 ```
 
 Follow the directions the above command spits out.
