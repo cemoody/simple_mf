@@ -27,7 +27,7 @@ users = pd.read_csv(base + "/ml-1m/users.dat", delimiter='::', engine='python',
 
 # Create users dataframe
 movies = pd.read_csv(base + "/ml-1m/movies.dat", delimiter='::', engine='python',
-                    names=['id', 'title', 'genres_str'])
+                     names=['id', 'title', 'genres_str'], encoding='latin-1')
 
 
 # Create dict of genres
@@ -83,3 +83,4 @@ np.savez("data/dataset.npz", train_x=train_x, train_y=train_y,
          train_xy=train_xy, test_x=test_x, test_y=test_y, test_xy=test_xy,
          train_dict=train_dict, test_dict=test_dict,
          n_user=n_user, n_item=n_item, n_ranks=n_rank, n_occu=n_occu)
+
