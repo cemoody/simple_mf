@@ -12,7 +12,7 @@ if not os.path.exists(base):
     os.mkdir(base)
 
 if not os.path.exists(name):
-    url = 'http://files.grouplens.org/datasets/movielens/ml-1m.zip'
+    url = 'https://files.grouplens.org/datasets/movielens/ml-1m.zip'
     r = requests.get(url)
     with open(name, 'wb') as fh:
         fh.write(r.content)
